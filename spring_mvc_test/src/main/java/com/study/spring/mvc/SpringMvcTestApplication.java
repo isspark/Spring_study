@@ -41,6 +41,8 @@ public class SpringMvcTestApplication {
         HandlerExecutionChain chain2 = handlerMapping.getHandler(request2);
         MockHttpServletResponse response2 = new MockHttpServletResponse();
         handlerAdapter.invokeHandlerMethod(request2, response2, (HandlerMethod) chain2.getHandler());
+
+        //aggregation
     }
 
 }
