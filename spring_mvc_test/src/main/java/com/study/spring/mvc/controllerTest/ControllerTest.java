@@ -4,20 +4,28 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.method.annotation.ExpressionValueMethodArgumentResolver;
+import org.springframework.web.method.annotation.ModelFactory;
 import org.springframework.web.method.annotation.RequestHeaderMethodArgumentResolver;
 import org.springframework.web.method.annotation.RequestParamMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodArgumentResolverComposite;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.mvc.method.annotation.*;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 public class ControllerTest {
 
     public static void main(String[] args) throws Exception {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(WebConfig.class);
+
+        RequestMappingHandlerAdapter adapter = new RequestMappingHandlerAdapter();
+        adapter.setApplicationContext(context);
+        adapter.afterPropertiesSet();
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setParameter("name","zhangsan");
@@ -32,6 +40,12 @@ public class ControllerTest {
         handlerMethod.setHandlerMethodArgumentResolvers(getArgumentResolverComposite(context));
 
         ModelAndViewContainer container = new ModelAndViewContainer();
+
+        Method getModelFactory = RequestMappingHandlerAdapter.class.getDeclaredMethod("getModelFactory", HandlerMethod.class, WebDataBinderFactory.class);
+        getModelFactory.setAccessible(true);
+        ModelFactory modelFactory = (ModelFactory) getModelFactory.invoke(adapter,handlerMethod,factory);
+        modelFactory.initModel(new ServletWebRequest(request),container,handlerMethod);
+
         handlerMethod.invokeAndHandle(new ServletWebRequest(request),container);
 
         System.out.println(container.getModel());
