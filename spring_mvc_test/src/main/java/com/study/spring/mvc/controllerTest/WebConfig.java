@@ -3,6 +3,8 @@ package com.study.spring.mvc.controllerTest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -12,9 +14,19 @@ public class WebConfig {
     @Controller
     static class Controller1{
         @ResponseStatus(HttpStatus.OK)
-        public ModelAndView foo(User user){
+        public ModelAndView foo(@ModelAttribute("u") User user){
             System.out.println("foo" + ": " + user);
             return null;
+        }
+    }
+
+    @ControllerAdvice
+    static class MyControllerAdviceTest{
+
+        @ModelAttribute("a")
+        public String  test(){
+            System.out.println("test");
+            return "test";
         }
     }
 
