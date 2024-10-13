@@ -1,12 +1,14 @@
 package com.study.spring.mvc.converter;
 
 import org.springframework.core.GenericTypeResolver;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 public class TestGenericType {
 
+    @ModelAttribute
     public static void main(String[] args) {
         //获取泛型类型的方式
         //1. JDK api
