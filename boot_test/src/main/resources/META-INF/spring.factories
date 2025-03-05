@@ -1,0 +1,4 @@
+# ConfigData Loaders
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.xstar.life.springboot.boot_test.autoconfig.AutoConfigurationTest.AutoConfigration1,\
+com.xstar.life.springboot.boot_test.autoconfig.AutoConfigurationTest.AutoConfigration2
